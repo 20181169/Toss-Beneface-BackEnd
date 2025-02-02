@@ -7,26 +7,16 @@ server:
     max-http-form-post-size: 20971520
 
 spring:
-  h2:
-    console:
-      enabled: true
-      path: /h2-console
-  # todo 개발 데이터베이스 연결
-  datasource:
-    url: jdbc:h2:file:./data/testdb
-    username: sa
-    password:
-    driver-class-name: org.h2.Driver
+  jackson:
+    serialization:
+      write-dates-as-timestamps: false  # 날짜를 타임스탬프 형식이 아닌 ISO 8601 형식으로 직렬화
 
-  jpa:
-    hibernate:
-      ddl-auto: update
-    show-sql: true
-    properties:
-      hibernate:
-        format_sql: true
-        default_batch_fetch_size: 500 # 일대다 컬렉션 조회 시 in절 사용
-    open-in-view: false # 영속성 컨텍스트의 생존 범위를 트랜잭션 범위로 한정 -> 컨트롤러에서 지연로딩으로 연관된 엔티티 가져오려고 하면 에러 발생
+  thymeleaf:
+    prefix: classpath:/templates/
+    suffix: .html
+
+  profiles:
+    active: prod
 
   servlet:
     multipart:
@@ -38,6 +28,13 @@ spring:
   mvc:
     pathmatch:
       matching-strategy: ant_path_matcher
+
+  web:
+    resources:
+      static-locations:
+        - classpath:/static/
+        - classpath:/public/
+        - classpath:/templates/
 
 logging:
   level:
@@ -70,3 +67,11 @@ cloud:
       secretKey: ENC(/GXm6N9N4I4tA4/McUHWeexBUVel2LzZjKc5ahr7cavstjxEZl8pWCxYhn502j16z5dnYNcbB6o=)
     region:
       static: ap-southeast-2 # AWS 리전
+
+# 토스 결제 연동
+payment:
+  toss:
+    test_client_api_key: test_ck_DpexMgkW36ya40vyX0l48GbR5ozO
+    test_secret_api_key: test_sk_GePWvyJnrKQdQ5Ey5OQ63gLzN97E
+    success_url : "http://localhost:8080/api/v1/payments/toss/success"
+    fail_url : "http://localhost:8080/api/v1/payments/toss/fail"

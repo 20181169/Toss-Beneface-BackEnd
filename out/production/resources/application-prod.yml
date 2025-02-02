@@ -1,5 +1,19 @@
 spring:
-  # todo 운영 데이터베이스 연결
+  datasource:
+    url: jdbc:mysql://db-aivle-bigproject.c16qqgc0i5qn.ap-northeast-2.rds.amazonaws.com:3306/toss_beneface
+    username: admin
+    password: toss10joaivle
+    driver-class-name: com.mysql.cj.jdbc.Driver
+  jpa:
+    database-platform: org.hibernate.dialect.MySQLDialect
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
+        default_batch_fetch_size: 500
+    open-in-view: false
 
 logging:
   level:
